@@ -25,11 +25,13 @@ export default class App extends Component {
 
       messages: [
         {
+          type: "incomingMessage",
           id: 123,
           username: "Bob",
           content: "Has anyone seen my marbles?",
         },
         {
+          type: "incomingMessage",
           id: 456,
           username: "Anonymous",
           content: "No, I think you lost them. You lost your marbles Bob. You lost them for good."
@@ -39,17 +41,22 @@ export default class App extends Component {
 
   }
 
-  userInput = (text) => {
+  // Helper function that is passed to ChatBar as prop
+  // Updates WS server with New Message data
+  userInput = (inputState) => {
+      this.state.currentUser = inputState.userBox;
+
       let newMessageItem = {
+        type: "postMessage",
         id: this.state.messageId + 1,
-        username: this.state.currentUser.name,
-        content: text
+        username: inputState.userBox,
+        content: inputState.msgBox
       }
 
       this.socket.send(JSON.stringify(newMessageItem));
   }
 
-
+  // Adds new message to client-side Message List
   updateList = (msg) => {
     this.setState({
       messageId: this.state.messageId + 1,
@@ -72,7 +79,7 @@ export default class App extends Component {
     }, 3000);
 
     this.socket.onmessage = (event) => {
-      console.log(JSON.parse(event.data));
+      // console.log(JSON.parse(event.data));
       this.updateList(JSON.parse(event.data));
     }
 
@@ -81,7 +88,7 @@ export default class App extends Component {
   // Called any time the props or state changes. The jsx elements returned in this
   // method are rendered in the DOM.
   render() {
-    return <div> <ChatBar currentUser={this.state.currentUser} userInput={this.userInput} /> <MessageList messages={this.state.messages} /> </div>;
+    return <div> <ChatBar currentUser={this.state.currentUser} userInput={this.userInput} userNameInput={this.userNameInput} /> <MessageList messages={this.state.messages} /> </div>;
   }
 
 

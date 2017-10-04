@@ -4,28 +4,35 @@ import ReactDOM from "react-dom";
 class ChatBar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { value: '' };
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.state = {
+      userBox: '',
+      msgBox: ''
+    };
+
   }
 
-  handleChange(event) {
-    this.setState({value: event.target.value});
+  handleUserChange = (event) => {
+    this.setState({
+      userBox: event.target.value,
+    });
   }
 
-  handleSubmit(event) {
-    alert('A name was submitted: ' + this.state.value);
-    event.preventDefault();
+  handleMsgChange = (event) => {
+    this.setState({
+      msgBox: event.target.value
+    });
   }
 
-  handleKeyPress = (event) => {
-    let text = this.state.value;
+  handleMsgKeyPress = (event) => {
     let props = this.props;
     if (event.key === 'Enter') {
       console.log('do validate');
-      props.userInput(text);
-      this.setState({ value: '' });
+      props.userInput(this.state);
+      this.setState({
+        userBox: this.state.userBox,
+        msgBox: ''
+      });
     }
   }
 
@@ -33,8 +40,9 @@ class ChatBar extends React.Component {
   render() {
     return (
       <footer className="chatbar">
-        <input className="chatbar-username" defaultValue={this.props.currentUser.name} placeholder="Your Name (Optional)" />
-        <input className="chatbar-message" type="text" value={this.state.value} onChange={this.handleChange} onKeyPress={this.handleKeyPress} />
+        <input className="chatbar-username" placeholder="Your Name (Optional)" value={this.state.userBox}
+        onChange={this.handleUserChange} />
+        <input className="chatbar-message" type="text" value={this.state.msgBox} onChange={this.handleMsgChange} onKeyPress={this.handleMsgKeyPress} />
       </footer>
     )
   }
