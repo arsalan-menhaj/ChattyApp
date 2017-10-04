@@ -44,25 +44,62 @@ export default class App extends Component {
   // Helper function that is passed to ChatBar as prop
   // Updates WS server with New Message data
   userInput = (inputState) => {
-      this.state.currentUser = inputState.userBox;
 
-      let newMessageItem = {
+      // This includes the case that the username changes
+      // as well
+      if ( this.state.currentUser.name !== inputState.userBox ) {
+        console.log('sending postNot');
+        let postNotification = {
+          type: "postNotification",
+          content: `${this.state.currentUser.name} changed their name to ${inputState.userBox}`
+        }
+
+        this.setState({
+          currentUser: {name: inputState.userBox}
+        });
+
+        this.socket.send(JSON.stringify(postNotification));
+        console.log(JSON.stringify(postNotification));
+      }
+
+      console.log('sending postMsg');
+
+      let postMessage = {
         type: "postMessage",
         id: this.state.messageId + 1,
         username: inputState.userBox,
         content: inputState.msgBox
       }
-
-      this.socket.send(JSON.stringify(newMessageItem));
+      console.log(JSON.stringify(postMessage));
+      this.socket.send(JSON.stringify(postMessage));
   }
 
-  // Adds new message to client-side Message List
+  userNameInput = (text) => {
+    if ( this.state.currentUser.name !== text ) {
+      console.log('sending postNot');
+      let postNotification = {
+        type: "postNotification",
+        content: `${this.state.currentUser.name} changed their name to ${text}`
+      }
+
+      this.setState({
+        currentUser: {name: text}
+      });
+
+      this.socket.send(JSON.stringify(postNotification));
+      console.log(JSON.stringify(postNotification));
+    }
+  }
+
+  // Adds new message/notification to client-side list
   updateList = (msg) => {
     this.setState({
+
       messageId: this.state.messageId + 1,
       messages: [...this.state.messages, msg]
     })
   }
+
 
 
   componentDidMount() {
@@ -79,8 +116,26 @@ export default class App extends Component {
     }, 3000);
 
     this.socket.onmessage = (event) => {
-      // console.log(JSON.parse(event.data));
-      this.updateList(JSON.parse(event.data));
+      //console.log(JSON.parse(event.data));
+      let parsed = JSON.parse(event.data);
+      switch (parsed.type) {
+        case "incomingNotification":
+          let notification = {
+            type: "incomingNotification",
+            id: this.state.messageId,
+            username: null,
+            content: parsed.content
+          }
+          console.log('notification', notification);
+          this.updateList(notification);
+          break;
+        case "incomingMessage":
+          console.log('message', parsed);
+          this.updateList(parsed);
+          break;
+      }
+
+
     }
 
   }
@@ -88,7 +143,7 @@ export default class App extends Component {
   // Called any time the props or state changes. The jsx elements returned in this
   // method are rendered in the DOM.
   render() {
-    return <div> <ChatBar currentUser={this.state.currentUser} userInput={this.userInput} userNameInput={this.userNameInput} /> <MessageList messages={this.state.messages} /> </div>;
+    return <div> <ChatBar defaultValue={this.state.currentUser} userInput={this.userInput} userNameInput={this.userNameInput} /> <MessageList messages={this.state.messages} /> </div>;
   }
 
 

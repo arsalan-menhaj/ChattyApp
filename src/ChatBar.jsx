@@ -24,10 +24,21 @@ class ChatBar extends React.Component {
     });
   }
 
+  handleUserKeyPress = (event) => {
+    let props = this.props;
+    if (event.key === 'Enter') {
+      console.log('Change Username');
+      props.userNameInput(this.state.userBox);
+      this.setState({
+        userBox: this.state.userBox,
+      });
+    }
+  }
+
   handleMsgKeyPress = (event) => {
     let props = this.props;
     if (event.key === 'Enter') {
-      console.log('do validate');
+      console.log('Post Message and possibly change username');
       props.userInput(this.state);
       this.setState({
         userBox: this.state.userBox,
@@ -41,7 +52,7 @@ class ChatBar extends React.Component {
     return (
       <footer className="chatbar">
         <input className="chatbar-username" placeholder="Your Name (Optional)" value={this.state.userBox}
-        onChange={this.handleUserChange} />
+        onChange={this.handleUserChange} onKeyPress={this.handleUserKeyPress} />
         <input className="chatbar-message" type="text" value={this.state.msgBox} onChange={this.handleMsgChange} onKeyPress={this.handleMsgKeyPress} />
       </footer>
     )
