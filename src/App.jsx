@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ChatBar from './ChatBar.jsx';
 import MessageList from './MessageList.jsx';
+import Navbar from './Navbar.jsx';
 
 export default class App extends Component {
   // set the initial state to indicate that that the timer is not loading
@@ -19,6 +20,8 @@ export default class App extends Component {
 
       // Need to transfer this to server
       messageId: 300,
+
+      numberOfUsers: 0,
 
       currentUser: {name: "Bob"},
        // optional. if currentUser is not defined, it means the user is Anonymous
@@ -140,12 +143,14 @@ export default class App extends Component {
       //console.log(JSON.parse(event.data));
 
       let data = JSON.parse(event.data);
+      console.log(data);
 
       // Checks whether incoming data is a notification or a message
       if (data.type) {
         this.handleItems(data);
-      } else {
-
+      } else if (data.clientCounter) {
+        console.log(data.ClientCounter);
+        this.state.numberOfUsers = data.clientCounter;
       }
 
 
@@ -156,7 +161,7 @@ export default class App extends Component {
   // Called any time the props or state changes. The jsx elements returned in this
   // method are rendered in the DOM.
   render() {
-    return <div> <ChatBar defaultValue={this.state.currentUser} userInput={this.userInput} userNameInput={this.userNameInput} /> <MessageList messages={this.state.messages} /> </div>;
+    return <div> <Navbar clientCounter={this.state.numberOfUsers} /> <ChatBar defaultValue={this.state.currentUser} userInput={this.userInput} userNameInput={this.userNameInput} /> <MessageList messages={this.state.messages} /> </div>;
   }
 
 
