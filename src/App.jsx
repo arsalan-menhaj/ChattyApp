@@ -13,11 +13,11 @@ export default class App extends Component {
   constructor(props) {
     super(props);
 
+    this.socket = new WebSocket("ws://localhost:3001");
 
     this.state = {
 
-      socket: new WebSocket("ws://localhost:3001", "protocolOne"),
-
+      // Need to transfer this to server
       messageId: 300,
 
       currentUser: {name: "Bob"},
@@ -46,13 +46,17 @@ export default class App extends Component {
         content: text
       }
 
-      this.state.socket.send(newMessageItem);
-
-      this.setState({
-        messageId: this.state.messageId + 1,
-        messages: [...this.state.messages, newMessageItem]
-      })
+      this.socket.send(JSON.stringify(newMessageItem));
   }
+
+
+  updateList = (msg) => {
+    this.setState({
+      messageId: this.state.messageId + 1,
+      messages: [...this.state.messages, msg]
+    })
+  }
+
 
   componentDidMount() {
 
@@ -66,6 +70,11 @@ export default class App extends Component {
       // Calling setState will trigger a call to render() in App and all child components.
       this.setState({messages: messages})
     }, 3000);
+
+    this.socket.onmessage = (event) => {
+      console.log(JSON.parse(event.data));
+      this.updateList(JSON.parse(event.data));
+    }
 
   }
 
