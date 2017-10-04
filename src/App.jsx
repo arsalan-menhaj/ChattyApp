@@ -74,6 +74,8 @@ export default class App extends Component {
       this.socket.send(JSON.stringify(postMessage));
   }
 
+  // Helper function that is passed to ChatBar as prop
+  // Updates WS server with New Username
   userNameInput = (text) => {
     if ( this.state.currentUser.name !== text ) {
       console.log('sending postNot');
@@ -94,12 +96,31 @@ export default class App extends Component {
   // Adds new message/notification to client-side list
   updateList = (msg) => {
     this.setState({
-
       messageId: this.state.messageId + 1,
       messages: [...this.state.messages, msg]
     })
   }
 
+  // Checks whether data coming in from server is a message/notification
+  // then calls the appropriate functions to update app accordingly
+  handleItems = (data) => {
+    switch (data.type) {
+    case "incomingNotification":
+      let notification = {
+        type: "incomingNotification",
+        id: this.state.messageId,
+        username: null,
+        content: data.content
+      }
+      console.log('notification', notification);
+      this.updateList(notification);
+      break;
+    case "incomingMessage":
+      console.log('message', data);
+      this.updateList(data);
+      break;
+    }
+  }
 
 
   componentDidMount() {
@@ -117,22 +138,14 @@ export default class App extends Component {
 
     this.socket.onmessage = (event) => {
       //console.log(JSON.parse(event.data));
-      let parsed = JSON.parse(event.data);
-      switch (parsed.type) {
-        case "incomingNotification":
-          let notification = {
-            type: "incomingNotification",
-            id: this.state.messageId,
-            username: null,
-            content: parsed.content
-          }
-          console.log('notification', notification);
-          this.updateList(notification);
-          break;
-        case "incomingMessage":
-          console.log('message', parsed);
-          this.updateList(parsed);
-          break;
+
+      let data = JSON.parse(event.data);
+
+      // Checks whether incoming data is a notification or a message
+      if (data.type) {
+        this.handleItems(data);
+      } else {
+
       }
 
 

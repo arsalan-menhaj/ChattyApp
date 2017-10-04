@@ -8,7 +8,7 @@ class Message extends React.Component {
     return (
       <div className="message">
         <span className="message-username">{this.props.messageItem.username}</span>
-        <span className="message-content">{this.props.messageItem.content}</span>
+        <span className={this.props.messageItem.type === "incomingNotification" ? "message system":"message-content"}>{this.props.messageItem.content}</span>
       </div>
     )
   }
