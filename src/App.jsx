@@ -13,9 +13,12 @@ export default class App extends Component {
   constructor(props) {
     super(props);
 
+
     this.state = {
 
-      messageId: 0,
+      socket: new WebSocket("ws://localhost:3001", "protocolOne"),
+
+      messageId: 300,
 
       currentUser: {name: "Bob"},
        // optional. if currentUser is not defined, it means the user is Anonymous
@@ -42,6 +45,8 @@ export default class App extends Component {
         username: this.state.currentUser.name,
         content: text
       }
+
+      this.state.socket.send(newMessageItem);
 
       this.setState({
         messageId: this.state.messageId + 1,
