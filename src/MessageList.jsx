@@ -19,7 +19,7 @@ class MessageList extends React.Component {
     return (
       <main className="messages">
       { this.props.messages.map((messageItem) => (
-        <Message messageItem={messageItem} key={messageItem.id} type={messageItem.type} />
+        <Message messageItem={messageItem} key={messageItem.id} type={messageItem.type} userColor={messageItem.userColor} />
       )) }
       </main>
     )

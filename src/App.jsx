@@ -23,6 +23,8 @@ export default class App extends Component {
 
       numberOfUsers: 0,
 
+      userColor: getRandomColor(),
+
       currentUser: {name: "Bob"},
        // optional. if currentUser is not defined, it means the user is Anonymous
 
@@ -71,6 +73,7 @@ export default class App extends Component {
         type: "postMessage",
         id: this.state.messageId + 1,
         username: inputState.userBox,
+        userColor: this.state.userColor,
         content: inputState.msgBox
       }
       console.log(JSON.stringify(postMessage));
@@ -106,7 +109,7 @@ export default class App extends Component {
 
   // Checks whether data coming in from server is a message/notification
   // then calls the appropriate functions to update app accordingly
-  handleItems = (data) => {
+  handleReturningItems = (data) => {
     switch (data.type) {
     case "incomingNotification":
       let notification = {
@@ -120,7 +123,19 @@ export default class App extends Component {
       break;
     case "incomingMessage":
       console.log('message', data);
-      this.updateList(data);
+      // this.updateList(data);
+      let message = {
+        type: "incomingMessage",
+        id: data.messageId,
+        username: data.username,
+        userColor: data.userColor,
+        content: data.content
+      }
+      // If image url is included in message, include image url as property
+      if (data.imageURL) {
+        message["imageURL"] = data.imageURL[0];
+      }
+      this.updateList(message);
       break;
     }
   }
@@ -145,14 +160,13 @@ export default class App extends Component {
       let data = JSON.parse(event.data);
       console.log(data);
 
-      // Checks whether incoming data is a notification or a message
+      // Checks nature of incoming data, and modifies app view accordingly
       if (data.type) {
-        this.handleItems(data);
+        this.handleReturningItems(data);
       } else if (data.clientCounter) {
         console.log(data.ClientCounter);
         this.state.numberOfUsers = data.clientCounter;
       }
-
 
     }
 
@@ -163,7 +177,23 @@ export default class App extends Component {
   render() {
     return <div> <Navbar clientCounter={this.state.numberOfUsers} /> <ChatBar defaultValue={this.state.currentUser} userInput={this.userInput} userNameInput={this.userNameInput} /> <MessageList messages={this.state.messages} /> </div>;
   }
+}
 
+function getRandomInt (min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is exclusive and the minimum is inclusive
+}
 
+function getRandomColor () {
+  // This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distinguishable vibrant markers in Google Maps and other apps.
+  // Adam Cole, 2011-Sept-14
+  // HSV to RBG adapted from: http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
+  let range = '0123456789abcdef'.split('');
+  let code = '#';
+  for (let i = 0; i < 6; i++) {
+    code += range[getRandomInt(0, 15)];
+  }
+  return (code);
 }
 
