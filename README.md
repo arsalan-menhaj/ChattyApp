@@ -1,45 +1,34 @@
-React Boilerplate
+ChattyApp
 =====================
 
-A minimal and light dev environment for ReactJS.
+A single-page real-time chat application made using React, Babbel and Webpack, connecting to a WebSocket Server. Features the ability to include images within messages.
+
 
 ### Usage
 
-Clone the boilerplate and create your own git repo.
+- Clone the repo
+- Install node dependencies using "npm install"
+- Start the app server using "npm start"
+- Clone the WebSocket server from https://github.com/arsalan-menhaj/chatty_server
+- Start the WS server using "npm start"
 
-```
-git clone git@github.com:lighthouse-labs/react-simple-boilerplate.git
-cd react-simple-boilerplate
-git remote rm origin
-git remote add origin [YOUR NEW REPOSITORY]
-# Manually update your package.json file
-```
-
-Install the dependencies and start the server.
-
-```
-npm install
-npm start
-open http://localhost:3000
-```
-
-### Static Files
-
-You can store static files like images, fonts, etc in the `build` folder.
-
-For example, if you copy a file called my_image.png into the build folder you can access it using `http://localhost:3000/build/my_image.png`.
-
-### Linting
-
-This boilerplate project includes React ESLint configuration.
-
-```
-npm run lint
-```
 
 ### Dependencies
 
-* React
-* Webpack
-* [babel-loader](https://github.com/babel/babel-loader)
-* [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
+* babel-core
+* babel-loader
+* babel-preset-es2015
+* babel-preset-react
+* css-loader
+* node-sass
+* sass-loader
+* sockjs-client
+* style-loader
+* webpack
+* webpack-dev-server
+* react
+* react-dom
+
+
+### Screenshots
+!["Messages and Embedded Image"]
