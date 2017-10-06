@@ -19,7 +19,7 @@ export default class App extends Component {
 
       userColor: getRandomColor(),
 
-      currentUser: {name: "Bob"},
+      currentUser: {name: ""},
        // optional. if currentUser is not defined, it means the user is Anonymous
 
       messages: [
@@ -36,9 +36,11 @@ export default class App extends Component {
       // as well
       if ( this.state.currentUser.name !== inputState.userBox ) {
         console.log('sending postNot');
+        let visibleName = this.state.currentUser.name ? this.state.currentUser.name:"Anonymous";
+        let visibleNewName = inputState.userBox ? inputState.userBox:"Anonymous";
         let postNotification = {
           type: "postNotification",
-          content: `${this.state.currentUser.name} changed their name to ${inputState.userBox}`
+          content: `${visibleName} changed their name to ${visibleNewName}`
         }
 
         this.setState({
@@ -67,9 +69,11 @@ export default class App extends Component {
   userNameInput = (text) => {
     if ( this.state.currentUser.name !== text ) {
       console.log('sending postNot');
+      let visibleName = this.state.currentUser.name ? this.state.currentUser.name:"Anonymous";
+      let visibleNewName = text ? text:"Anonymous";
       let postNotification = {
         type: "postNotification",
-        content: `${this.state.currentUser.name} changed their name to ${text}`
+        content: `${visibleName} changed their name to ${visibleNewName}`
       }
 
       this.setState({
