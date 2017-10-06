@@ -1,7 +1,11 @@
 ChattyApp
 =====================
 
-A single-page real-time chat application made using React, Babbel and Webpack, connecting to a WebSocket Server. Features the ability to include images within messages.
+A single-page real-time chat application made using React, Babbel and Webpack, connecting to a WebSocket Server.
+
+Features:
+- Each user is given a unique identifying color
+- Links to images can be included in a message, which will display the image within the message
 
 
 ### Usage
