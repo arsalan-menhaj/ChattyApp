@@ -31,4 +31,4 @@ A single-page real-time chat application made using React, Babbel and Webpack, c
 
 
 ### Screenshots
-!["Messages and Embedded Image"]
+!["Messages and Embedded Image"](https://github.com/arsalan-menhaj/ChattyApp/blob/master/build/Screen%20Shot%202017-10-06%20at%2012.57.07%20PM.png)
