@@ -4,12 +4,6 @@ import MessageList from './MessageList.jsx';
 import Navbar from './Navbar.jsx';
 
 export default class App extends Component {
-  // set the initial state to indicate that that the timer is not loading
-  // React will call the functions in the following order when it mounts the component:
-  //   constructor
-  //   componentWillMount (not used in this component)
-  //   render
-  //   componentDidMount
 
   constructor(props) {
     super(props);
@@ -29,18 +23,6 @@ export default class App extends Component {
        // optional. if currentUser is not defined, it means the user is Anonymous
 
       messages: [
-        {
-          type: "incomingMessage",
-          id: 123,
-          username: "Bob",
-          content: "Has anyone seen my marbles?",
-        },
-        {
-          type: "incomingMessage",
-          id: 456,
-          username: "Anonymous",
-          content: "No, I think you lost them. You lost your marbles Bob. You lost them for good."
-        }
       ]
     };
 

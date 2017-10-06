@@ -57,8 +57,10 @@ body {
 
 .message-content {
   flex: 8;
-  height: 80%;
-  width: 80%;
+  height: inherit;
+  width: inherit;
+  max-height: 60%;
+  max-width: 60%;
 }
 
 .message-username {
@@ -94,16 +96,9 @@ body {
   padding-top: 20px;
 }
 
-.embedded-image-container{
-  width: inherit;
+img {
+  width:inherit;
   height: inherit;
-  max-width: 60%;
-  max-height: 60%;
-}
-
-.embedded-image {
-  width: inherit;
-  height: inherit;
-  max-width: 60%;
-  max-height: 60%;
+  max-width: 100%;
+  max-height: 100%;
 }
