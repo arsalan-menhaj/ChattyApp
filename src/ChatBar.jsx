@@ -39,7 +39,7 @@ class ChatBar extends React.Component {
     let props = this.props;
     if (event.key === 'Enter') {
       console.log('Post Message and possibly change username');
-      props.userInput(this.state);
+      props.messageInput(this.state);
       this.setState({
         userBox: this.state.userBox,
         msgBox: ''
