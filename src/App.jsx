@@ -29,8 +29,6 @@ export default class App extends Component {
 
     this.state = {
 
-      messageId: 300,
-
       numberOfUsers: 1,
 
       userColor: getRandomColor(),
@@ -56,7 +54,6 @@ export default class App extends Component {
 
       let postMessage = {
         type: "postMessage",
-        id: this.state.messageId + 1,
         username: inputState.userBox,
         userColor: this.state.userColor,
         content: inputState.msgBox
@@ -87,7 +84,6 @@ export default class App extends Component {
   // Adds new message/notification to client-side list
   updateList = (msg) => {
     this.setState({
-      messageId: this.state.messageId + 1,
       messages: [...this.state.messages, msg]
     })
   }
@@ -99,7 +95,7 @@ export default class App extends Component {
     case "incomingNotification":
       let notification = {
         type: "incomingNotification",
-        id: this.state.messageId,
+        id: data.id,
         username: null,
         content: data.content
       }
@@ -108,7 +104,7 @@ export default class App extends Component {
     case "incomingMessage":
       let message = {
         type: "incomingMessage",
-        id: data.messageId,
+        id: data.id,
         username: data.username,
         userColor: data.userColor,
         content: data.content
